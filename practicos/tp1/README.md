@@ -48,7 +48,7 @@ debe responder es el siguiente:
 1. ¿Cuál es el método de ordenamiento que utilizó? Explíquelo.
 2. Explicar una sección de código indicada por el profesor
 3. ¿Cómo sabes que te muestra de verdad todas las palabras
-que terminan en vocales?
+que comienzan con vocales?
 4. ¿Cuáles son las validaciones que se han colocado?
 5. Mostrar el archivo de logs y mostrar que tiene contexto
 luego de un par de ejecuciones del programa.
