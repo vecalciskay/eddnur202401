@@ -159,7 +159,7 @@ public class VentanaPrincipal extends JFrame {
         int minLength = Math.min(word1.length(), word2.length());
         // Itero sobre cada carácter de ambas palabras
         for (int i = 0; i < minLength; i++) {
-            // Conviertyo los caracteres a mayusculas para realizar una comparacion insensible a mayusculas y minusculas
+            // Convierto los caracteres a mayusculas para realizar una comparacion insensible a mayusculas y minusculas
             char char1 = Character.toUpperCase(word1.charAt(i));
             char char2 = Character.toUpperCase(word2.charAt(i));
             // Comparo los caracteres
