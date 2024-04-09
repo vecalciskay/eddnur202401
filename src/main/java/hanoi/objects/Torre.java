@@ -1,5 +1,6 @@
 package hanoi.objects;
 
+import java.awt.*;
 import java.util.Stack;
 
 public class Torre {
@@ -39,5 +40,20 @@ public class Torre {
             result.append(a).append("-");
         }
         return result.toString();
+    }
+
+    public void dibujar(int x, int y, Graphics g) {
+        int ancho = Anillo.ANCHOANILLO;
+        int alto = Anillo.ANCHOANILLO;
+
+        g.setColor(Color.red);
+        g.fillRect(x, y, 10, 250);
+        g.setColor(Color.black);
+
+        for (Anillo a :
+                anillos) {
+            a.dibujar(x, y, g);
+            y -= Anillo.ANCHOANILLO + 5;
+        }
     }
 }
