@@ -4,6 +4,8 @@ import hanoi.objects.Hanoi;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class JHanoiiFrame extends JFrame {
     private JHanoiPanel panel;
@@ -24,7 +26,6 @@ public class JHanoiiFrame extends JFrame {
        JButton btn = new JButton("Hacer");
        btn.addActionListener(e -> {
            btnHacer_clicked();
-
        });
 
        this.getContentPane().add(btn, BorderLayout.SOUTH);
