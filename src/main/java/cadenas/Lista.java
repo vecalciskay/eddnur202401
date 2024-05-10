@@ -23,6 +23,87 @@ public class Lista<E> implements Iterable<E> {
         tamano++;
     }
 
+    /**
+     * Agregar elemento al final
+     * @param o elemento a agregar
+     */
+    public void add(E o) {
+        Nodo<E> nuevo = new Nodo<>(o);
+        if (raiz == null) {
+            raiz = nuevo;
+            tamano++;
+            return;
+        }
+        Nodo<E> actual = raiz;
+        while (actual.getSiguiente() != null) {
+            actual = actual.getSiguiente();
+        }
+        actual.setSiguiente(nuevo);
+        tamano++;
+    }
+
+    /**
+     * Eliminar ultimo elemento
+     */
+    public void pop() {
+        if (raiz == null) {
+            return;
+        }
+        delete(tamano - 1);
+    }
+
+    /**
+     * Eliminar primer elemento
+     */
+    public void poll() {
+        if (raiz == null) {
+            return;
+        }
+        delete(0);
+    }
+
+    public void remove(E ele) {
+        if (raiz == null) {
+            return;
+        }
+        Nodo<E> actual = raiz;
+        int posActual = 0;
+        while (actual.getSiguiente() != null && !actual.getContenido().equals(ele)) {
+            actual = actual.getSiguiente();
+            posActual++;
+        }
+        if (actual.getContenido().equals(ele)) {
+            delete(posActual);
+        }
+    }
+
+    /**
+     * Eliminar en cualquier posición de la lista
+     *
+     * @param posicion a eliminar
+     */
+    public void delete(int posicion) {
+        if (tamano < posicion + 1) {
+            throw new IndexOutOfBoundsException("Intentó eliminar la posición " + posicion + ", La lista solo tiene " + tamano + " elementos");
+        }
+        if (posicion == 0) {
+            raiz = raiz.getSiguiente();
+            tamano--;
+            return;
+        }
+        Nodo<E> actual = raiz;
+        int posActual = 0;
+        Nodo<E> anterior = null;
+        while (actual.getSiguiente() != null && posActual < posicion) {
+            anterior = actual;
+            actual = actual.getSiguiente();
+            posActual++;
+        }
+        Nodo<E> siguiente = actual.getSiguiente();
+        anterior.setSiguiente(siguiente);
+        tamano--;
+    }
+
     public E get(int posicion) {
         if (posicion < 0)
             throw new IndexOutOfBoundsException("Fuera de rango");
@@ -34,7 +115,7 @@ public class Lista<E> implements Iterable<E> {
 
         int posicionActual = 0;
         Nodo<E> actual = raiz;
-        while(actual != null && posicionActual < posicion) {
+        while (actual != null && posicionActual < posicion) {
 
             actual = actual.getSiguiente();
             posicionActual++;
@@ -47,13 +128,13 @@ public class Lista<E> implements Iterable<E> {
 
     @Override
     public String toString() {
-        if(raiz == null) {
+        if (raiz == null) {
             return "[VACIA]";
         }
         StringBuilder result = new StringBuilder();
         result.append("(Tam: ").append(tamano).append(") ");
         Nodo<E> actual = raiz;
-        while(actual != null) {
+        while (actual != null) {
             result.append(actual.getContenido());
             result.append("  ->  ");
             actual = actual.getSiguiente();
