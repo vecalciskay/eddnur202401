@@ -1,9 +1,5 @@
 package cadenas;
 
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
-
 public class ListaDoble<E> {
     private ListaDoble.Nodo<E> raiz;
     private int tamano;
@@ -51,6 +47,64 @@ public class ListaDoble<E> {
         actual.setSiguiente(nuevo);
         nuevo.setAnterior(actual);
         tamano++;
+    }
+
+    public E get(int posicion) {
+        if (tamano < posicion + 1) {
+            throw new IndexOutOfBoundsException("Fuera de rango");
+        }
+        if (posicion < 0) {
+            throw new IndexOutOfBoundsException("Fuera de rango");
+        }
+        Nodo<E> actual = raiz;
+        int posActual = 0;
+        while (posActual < posicion && actual.getSiguiente() != null) {
+            actual = actual.getSiguiente();
+            posActual++;
+        }
+        return actual.getContenido();
+    }
+
+    public void delete(int posicion) {
+        if (tamano < posicion + 1) {
+            throw new IndexOutOfBoundsException("Intentó eliminar la posición " + posicion + ", La lista solo tiene " + tamano + " elementos");
+        }
+
+        if (posicion == 0) {
+            raiz = raiz.getSiguiente();
+            tamano--;
+            return;
+        }
+        Nodo<E> actual = raiz;
+        int posActual = 0;
+        while (actual.getSiguiente() != null && posActual < posicion) {
+            actual = actual.getSiguiente();
+            posActual++;
+        }
+        Nodo<E> anterior = actual.getAnterior();
+        Nodo<E> siguiente = actual.getSiguiente();
+        if (anterior != null) {
+            anterior.setSiguiente(siguiente);
+        }
+        if (siguiente != null) {
+            siguiente.setAnterior(anterior);
+        }
+        tamano--;
+    }
+
+    public void remove(E ele) {
+        if (raiz == null) {
+            return;
+        }
+        Nodo<E> actual = raiz;
+        int posActual = 0;
+        while (actual.getSiguiente() != null && !actual.getContenido().equals(ele)) {
+            actual = actual.getSiguiente();
+            posActual++;
+        }
+        if (actual.getContenido().equals(ele)) {
+            delete(posActual);
+        }
     }
 
     @Override
