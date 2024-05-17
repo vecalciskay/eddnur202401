@@ -1,7 +1,7 @@
 package cadenas;
 
 public class ListaDoble<E> {
-    private ListaDoble.Nodo<E> raiz;
+    protected ListaDoble.Nodo<E> raiz;
     private int tamano;
 
     public ListaDoble() {
