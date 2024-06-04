@@ -7,9 +7,9 @@ import java.util.HashMap;
 
 public class Arbol<E> {
     private Nodo<E> raiz;
-    private static final int ANCHO_NODO = 40;
-    private static final int ESPACIO_VERTICAL = 40;
-    private static final int ESPACIO_HORIZONTAL = 20;
+    private static final int ANCHO_NODO = 80;
+    private static final int ESPACIO_VERTICAL = 130;
+    private static final int ESPACIO_HORIZONTAL = 30;
     //private HashMap<String,Nodo<E>> nodos;
     public Arbol() {
         raiz = null;
@@ -74,6 +74,14 @@ public class Arbol<E> {
             hijos = new Lista<>();
         }
 
+        public E getContenido() {
+            return contenido;
+        }
+
+        public Lista<Nodo<E>> getHijos() {
+            return hijos;
+        }
+
         public void add(Nodo<E> hijo) {
             hijos.insert(hijo);
         }
@@ -116,19 +124,49 @@ public class Arbol<E> {
         }
 
         public void dibujar(Graphics g, int x, int y) {
-            int ancho = calcularAncho(this);
-            this.dibujarNodo(g, ancho/2 - ANCHO_NODO/2, y);
+            int ancho = calcularAncho();
 
             int yHijo = y + ESPACIO_VERTICAL;
-            int separador = 0;
             int xHijo = x;
             for(Nodo<E> hijo : hijos) {
-                xHijo += separador;
+                int anchoHijo = hijo.calcularAncho();
 
+                g.drawLine(x + ancho/2, y + ANCHO_NODO/2,
+                        xHijo + anchoHijo/2, yHijo + ANCHO_NODO/2);
                 hijo.dibujar(g, xHijo, yHijo);
 
-                separador = ESPACIO_HORIZONTAL;
+                xHijo += (ESPACIO_HORIZONTAL + anchoHijo);
             }
+            this.dibujarNodo(g, x + ancho/2 - ANCHO_NODO/2, y);
+
+        }
+
+        private void dibujarNodo(Graphics g, int x, int y) {
+            g.setColor(Color.white);
+            g.fillOval(x, y, ANCHO_NODO, ANCHO_NODO);
+            g.setColor(Color.black);
+            g.drawOval(x, y, ANCHO_NODO, ANCHO_NODO);
+
+            g.setFont(new Font("Serif", Font.ITALIC, 22));
+            g.drawString(contenido.toString(),
+                    x + ANCHO_NODO / 2 - 8,
+                    y + ANCHO_NODO/2 + 7);
+
+        }
+
+        private int calcularAncho() {
+            if (hijos.getTamano() == 0) {
+                return ANCHO_NODO;
+            }
+
+            int resultado = 0;
+            int espacio = 0;
+            for(Nodo<E> hijo : hijos) {
+                resultado += (espacio + hijo.calcularAncho());
+                espacio = ESPACIO_HORIZONTAL;
+            }
+
+            return resultado;
         }
     }
 }
