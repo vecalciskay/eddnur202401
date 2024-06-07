@@ -1,4 +1,4 @@
 package aritmetica;
 
-public class ElementoAritmetico {
+public abstract class ElementoAritmetico {
 }
