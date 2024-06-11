@@ -5,7 +5,24 @@ public class Operacion extends ElementoAritmetico {
     public Operacion(Signo signoOperacion) {
         this.signo = signoOperacion;
     }
-
+    public Operacion(char c) throws IllegalArgumentException {
+        switch(c) {
+            case '+':
+                signo = Signo.Suma;
+                break;
+            case '-':
+                signo = Signo.Resta;
+                break;
+            case '*':
+                signo = Signo.Multiplicacion;
+                break;
+            case '/':
+                signo = Signo.Division;
+                break;
+            default:
+                throw new IllegalArgumentException("No es un signo");
+        }
+    }
     public String toString() {
         switch(signo) {
             case Suma:

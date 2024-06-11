@@ -60,10 +60,18 @@ public class Arbol<E> {
         raiz.dibujar(g,0,0);
     }
 
+    public E nodoEnPixel(int x, int y) {
+        if (raiz == null)
+            return null;
+        return raiz.nodoEnPixel(x, y);
+    }
+
     class Nodo<E> {
         private String id;
         private E contenido;
         private Lista<Nodo<E>> hijos;
+        private int ultimaPosicionX;
+        private int ultimaPosicionY;
 
         public Nodo(E o) {
             this(o, o.toString());
@@ -72,6 +80,8 @@ public class Arbol<E> {
             id = identificador;
             contenido = o;
             hijos = new Lista<>();
+            ultimaPosicionY = -1;
+            ultimaPosicionX = -1;
         }
 
         public E getContenido() {
@@ -105,6 +115,23 @@ public class Arbol<E> {
             result.append(")");
 
             return result.toString();
+        }
+
+        public E nodoEnPixel(int x, int y) {
+            if (ultimaPosicionX < 0 || ultimaPosicionY < 0)
+                return null;
+            if(x > ultimaPosicionX &&
+               x < (ultimaPosicionX + ANCHO_NODO) &&
+               y > ultimaPosicionY &&
+               y < (ultimaPosicionY + ANCHO_NODO)) {
+                return contenido;
+            }
+            for (Nodo<E> hijo : hijos) {
+                E contenidoHijo = hijo.nodoEnPixel(x,y);
+                if (contenidoHijo != null)
+                    return contenidoHijo;
+            }
+            return null;
         }
 
         public Nodo<E> buscar(String id) {
@@ -142,6 +169,9 @@ public class Arbol<E> {
         }
 
         private void dibujarNodo(Graphics g, int x, int y) {
+            ultimaPosicionX = x;
+            ultimaPosicionY = y;
+
             g.setColor(Color.white);
             g.fillOval(x, y, ANCHO_NODO, ANCHO_NODO);
             g.setColor(Color.black);

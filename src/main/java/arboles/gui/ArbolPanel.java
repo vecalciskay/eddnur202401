@@ -4,13 +4,21 @@ import arboles.Arbol;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class ArbolPanel extends JPanel {
+public class ArbolPanel extends JPanel
+        implements MouseListener, PropertyChangeListener {
 
-    private Arbol<String> modelo;
+    private Escena modelo;
 
-    public ArbolPanel(Arbol<String> m) {
+    public ArbolPanel(Escena m) {
+
         modelo = m;
+        modelo.addObserver(this);
+        this.addMouseListener(this);
     }
 
     @Override
@@ -23,6 +31,42 @@ public class ArbolPanel extends JPanel {
         super.paintComponent(g);
 
         if (modelo != null)
-            modelo.dibujar(g,0,0);
+            modelo.getArbol().dibujar(g,0,0);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        Arbol<String> arbol = modelo.getArbol();
+        String contenido = arbol.nodoEnPixel(e.getX(), e.getY());
+        if (contenido == null)
+            modelo.setMensaje("Nada");
+        else
+            modelo.setMensaje("Nodo seleccionado (" + e.getX() +
+                ", " + e.getY() + ": " + contenido);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        repaint();
     }
 }

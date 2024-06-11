@@ -29,7 +29,8 @@ public class TestAritmetica {
 
         System.out.println(a + " = " + a.evaluar());
 
-        //ArbolAritmetico b = new ArbolAritmetico("(2 * 3) + ( 5 / (8 - 7))");
-        //System.out.println(b + " = " + b.evaluar());
+        System.out.println(" ----------------------- ");
+        ArbolAritmetico b = new ArbolAritmetico("4+7");
+        System.out.println(b + " = " + b.evaluar());
     }
 }

@@ -16,6 +16,10 @@ public class ArbolAritmetico {
         //nodos = new HashMap<>();
     }
 
+    public ArbolAritmetico(String expresion) {
+        raiz = new Nodo(expresion);
+    }
+
     @Override
     public String toString() {
         if (raiz == null) {
@@ -85,6 +89,45 @@ public class ArbolAritmetico {
         public Nodo(ElementoAritmetico o, String identificador) {
             id = identificador;
             contenido = o;
+        }
+
+        public Nodo(String expresion) {
+            int npa = 0;
+            try {
+                int n = Integer.parseInt(expresion);
+                contenido = new Numero(n);
+                return;
+            } catch(NumberFormatException q) {
+                ;
+            }
+            for (int i = 0; i < expresion.length(); i++) {
+                char c = expresion.charAt(i);
+                if (c == '(')
+                {
+                    npa++;
+                    continue;
+                }
+                if (c == ')')
+                {
+                    npa--;
+                    continue;
+                }
+                if (npa == 0 && esSigno(c)) {
+                    contenido = new Operacion(c);
+                    setIzquierda(new Nodo(expresion.substring(0,i)));
+                    setDerecha(new Nodo(expresion.substring(i+1)));
+                    break;
+                }
+            }
+        }
+
+        private boolean esSigno(char c) {
+            try {
+                new Operacion(c);
+                return true;
+            } catch (IllegalArgumentException q) {
+                return false;
+            }
         }
 
         public ElementoAritmetico getContenido() {
