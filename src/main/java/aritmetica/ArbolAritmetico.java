@@ -2,6 +2,7 @@ package aritmetica;
 
 import arboles.Arbol;
 import cadenas.Lista;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -91,7 +92,13 @@ public class ArbolAritmetico {
             contenido = o;
         }
 
-        public Nodo(String expresion) {
+        public Nodo(@NotNull String expresionSucia) {
+            leerExpresion(expresionSucia);
+        }
+
+        public void leerExpresion(String expresionSucia) {
+
+            String expresion = expresionSucia.trim();
             int npa = 0;
             try {
                 int n = Integer.parseInt(expresion);
@@ -100,6 +107,7 @@ public class ArbolAritmetico {
             } catch(NumberFormatException q) {
                 ;
             }
+            boolean expresionLeida = false;
             for (int i = 0; i < expresion.length(); i++) {
                 char c = expresion.charAt(i);
                 if (c == '(')
@@ -116,9 +124,21 @@ public class ArbolAritmetico {
                     contenido = new Operacion(c);
                     setIzquierda(new Nodo(expresion.substring(0,i)));
                     setDerecha(new Nodo(expresion.substring(i+1)));
+                    expresionLeida = true;
                     break;
                 }
             }
+            if (expresionLeida)
+                return;
+            if (!expresionLeida && npa == 0) {
+                String expresionSinParentesis =
+                        expresion.substring(1,expresion.length()-1);
+                leerExpresion(expresionSinParentesis);
+                return;
+            }
+            // Si llega hasta aqui es porque la expresion esta
+            // MAL!
+            throw new IllegalArgumentException("Expresion incorrect");
         }
 
         private boolean esSigno(char c) {

@@ -30,7 +30,8 @@ public class TestAritmetica {
         System.out.println(a + " = " + a.evaluar());
 
         System.out.println(" ----------------------- ");
-        ArbolAritmetico b = new ArbolAritmetico("4+7");
+        ArbolAritmetico b =
+                new ArbolAritmetico("( 32 -1)  * (6 )");
         System.out.println(b + " = " + b.evaluar());
     }
 }
