@@ -1,24 +1,42 @@
 package basedatos;
 
+import basedatos.dao.FactoryDao;
 import basedatos.dao.PersonaDao;
+import basedatos.dao.mysql.PersonaDaoMysql;
 import basedatos.dto.PersonaDto;
 import cadenas.Lista;
 
 public class TestDao {
     public static void main(String[] args) {
 
-        PersonaDao dao = new PersonaDao();
-        Lista<PersonaDto> personas = dao.getPersonas();
+        PersonaDao dao = FactoryDao.obtenerOCrear().newPersonaDao();
+        Lista<PersonaDto> personas = dao.get();
         System.out.println(personas);
-        /*
-        PersonaDto nuevo = new PersonaDto(2,"PAco",169,45.8);
+
+        //System.out.println("Insertamos nuevo");
+        //testInsert();
+        testUpdate(2);
+        testDelete(2);
+
+        PersonaDto p = dao.getById(1);
+        System.out.println(p);
+    }
+
+    private static void testDelete(int id) {
+        PersonaDao dao = FactoryDao.obtenerOCrear().newPersonaDao();
+        dao.delete(id);
+    }
+
+    private static void testUpdate(int id) {
+        PersonaDao dao = FactoryDao.obtenerOCrear().newPersonaDao();
+        PersonaDto p = new PersonaDto(id,"PAco",169,48.5f);
+        p.setNombre("Paco");
+        dao.update(p);
+    }
+
+    private static void testInsert() {
+        PersonaDao dao = FactoryDao.obtenerOCrear().newPersonaDao();
+        PersonaDto nuevo = new PersonaDto(2,"PAco",169,48.5f);
         dao.insert(nuevo);
-
-        PersonaDto dto = dao.getPersonaById(nuevo.getId());
-
-        dto.setNombre("Luis");
-        dao.update(dto);
-
-        dao.delete(2);*/
     }
 }
