@@ -1,11 +1,26 @@
 package basedatos.dto;
 
+/**
+ * Este es el script sql que se debe utilizar para crear la tabla de personas
+ * create table personas (
+ *    id int primary key,
+ *    nombre varchar(50),
+ *    alturacm int,
+ *    pesokg float
+ *    );
+ */
 public class PersonaDto {
     private int id;
     private String nombre;
     private int alturacm;
     private float pesokg;
 
+    public PersonaDto() {
+        this.id = 0;
+        this.nombre = "";
+        this.alturacm = 0;
+        this.pesokg = 0.0f;
+    }
     public PersonaDto(int id, String nombre, int altura, float peso) {
         this.id = id;
         this.nombre = nombre;

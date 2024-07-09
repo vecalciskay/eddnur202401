@@ -4,6 +4,8 @@ import basedatos.dao.FactoryDao;
 import basedatos.dao.PersonaDao;
 import basedatos.dao.mysql.PersonaDaoMysql;
 import basedatos.dto.PersonaDto;
+import basedatos.searcher.ColumnType;
+import basedatos.searcher.SearchCriteria;
 import cadenas.Lista;
 
 public class TestDao {
@@ -15,11 +17,17 @@ public class TestDao {
 
         //System.out.println("Insertamos nuevo");
         //testInsert();
-        testUpdate(2);
-        testDelete(2);
+        //testUpdate(2);
+        //testDelete(2);
 
-        PersonaDto p = dao.getById(1);
-        System.out.println(p);
+        SearchCriteria criteria = new SearchCriteria();
+        criteria.add(ColumnType.personas_nombre, "LIKE__Jorg")
+                .add(ColumnType.personas_peso, "<__80");
+        personas = dao.get(criteria);
+        System.out.println(personas);
+
+        /*PersonaDto p = dao.getById(1);
+        System.out.println(p);*/
     }
 
     private static void testDelete(int id) {

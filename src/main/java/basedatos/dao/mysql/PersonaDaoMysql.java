@@ -3,12 +3,24 @@ package basedatos.dao.mysql;
 import basedatos.dao.Conexion;
 import basedatos.dao.PersonaDao;
 import basedatos.dto.PersonaDto;
+import basedatos.mapper.SimpleMapper;
+import basedatos.searcher.SearchCriteria;
 import cadenas.Lista;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 
 public class PersonaDaoMysql extends PersonaDao {
+    private static final Logger logger = LogManager.getRootLogger();
     public Lista<PersonaDto> get() {
+        return get(new SearchCriteria());
+    }
+
+    @Override
+    public Lista<PersonaDto> get(SearchCriteria criteria) {
+        SimpleMapper mapper = new SimpleMapper(PersonaDto.class);
         Lista<PersonaDto> resultado = new Lista<>();
         Connection conn = null;
 
@@ -17,18 +29,13 @@ public class PersonaDaoMysql extends PersonaDao {
         try {
             conn = Conexion.obtenerOCrear().conectar();
 
-            String query = "SELECT id, nombre, alturacm, pesokg FROM personas";
+            String query = "SELECT id, nombre, alturacm, pesokg FROM personas WHERE " + criteria.toSqlString();
+            logger.info("Query: " + query);
             stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
 
             while(rs.next()) {
-                int objId = rs.getInt("id");
-                String objNombre = rs.getString("nombre");
-                int objAlturacm = rs.getInt("alturacm");
-                float objPesokg = rs.getFloat("pesokg");
-
-                PersonaDto dto =
-                        new PersonaDto(objId,objNombre,objAlturacm, objPesokg);
+                PersonaDto dto = (PersonaDto) mapper.mapFromResultSet(rs);
                 resultado.insert(dto);
             }
         } catch (SQLException ex) {
@@ -36,8 +43,13 @@ public class PersonaDaoMysql extends PersonaDao {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-        }
-        finally {
+        } catch (InvocationTargetException ex) {
+            System.out.println("InvocationTargetException: " + ex.getMessage());
+        } catch (InstantiationException ex) {
+            System.out.println("InstantiationException: " + ex.getMessage());
+        } catch (IllegalAccessException ex) {
+            System.out.println("IllegalAccessException: " + ex.getMessage());
+        } finally {
             // it is a good idea to release
             // resources in a finally{} block
             // in reverse-order of their creation
@@ -76,7 +88,6 @@ public class PersonaDaoMysql extends PersonaDao {
             stmt.setString(2, obj.getNombre());
             stmt.setInt(3, obj.getAlturacm());
             stmt.setFloat(4, obj.getPesokg());
-
             stmt.executeUpdate();
             return obj;
         } catch(SQLException ex) {
@@ -131,6 +142,7 @@ public class PersonaDaoMysql extends PersonaDao {
     }
 
     public PersonaDto getById(Integer id) {
+        SimpleMapper mapper = new SimpleMapper(PersonaDto.class);
         PersonaDto resultado = null;
         Connection conn = null;
 
@@ -142,25 +154,24 @@ public class PersonaDaoMysql extends PersonaDao {
             String query = "SELECT id, nombre, alturacm, pesokg " +
                     "FROM personas " +
                     "WHERE id = " + id;
+            logger.info("Query: " + query);
             stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
             rs.next();
-            int objId = rs.getInt("id");
-            String objNombre = rs.getString("nombre");
-            int objAlturacm = rs.getInt("alturacm");
-            float objPesokg = rs.getFloat("pesokg");
-
-            resultado =
-                    new PersonaDto(objId,objNombre,objAlturacm, objPesokg);
-
+            resultado = (PersonaDto)mapper.mapFromResultSet(rs);
         } catch (SQLException ex) {
             // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
             resultado = null;
-        }
-        finally {
+        } catch (InvocationTargetException ex) {
+            System.out.println("InvocationTargetException: " + ex.getMessage());
+        } catch (InstantiationException ex) {
+            System.out.println("InstantiationException: " + ex.getMessage());
+        } catch (IllegalAccessException ex) {
+            System.out.println("IllegalAccessException: " + ex.getMessage());
+        } finally {
             // it is a good idea to release
             // resources in a finally{} block
             // in reverse-order of their creation

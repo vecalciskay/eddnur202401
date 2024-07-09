@@ -27,11 +27,17 @@ public class Conexion {
             }
 
             String servidor = "localhost";
-            String bd = "prog3";
+            String bd = "edd";
             String usuario = "root";
-            String clave = "root";
+            String clave = "krane345";
+            int port = 6603;
 
             String strConexion = "jdbc:mysql://" + servidor + "/" +
+                    bd + "?" +
+                    "user=" + usuario +
+                    "&password=" + clave;
+            if (port != 3306 && port != 0)
+                strConexion = "jdbc:mysql://" + servidor + ":" + port + "/" +
                     bd + "?" +
                     "user=" + usuario +
                     "&password=" + clave;

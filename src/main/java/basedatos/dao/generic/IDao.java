@@ -1,5 +1,6 @@
 package basedatos.dao.generic;
 
+import basedatos.searcher.SearchCriteria;
 import cadenas.Lista;
 
 /**
@@ -13,4 +14,5 @@ public interface IDao<E,T> {
     public E update(E o);
     public int delete(T id);
     public Lista<E> get();
+    public Lista<E> get(SearchCriteria criteria);
 }
